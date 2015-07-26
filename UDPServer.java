@@ -15,7 +15,7 @@ class UDPServer {
 	public static void main(String args[]) throws Exception {
 		// SSDP listens on a IP and port as below
 		InetAddress group = InetAddress.getByName("239.255.255.250");
-		MulticastSocket s = new MulticastSocket(1900);
+		MulticastSocket s = new MulticastSocket(1901);
 		s.joinGroup(group);
 		while (true) {
 			byte[] receiveData = new byte[1024];
@@ -26,17 +26,32 @@ class UDPServer {
 			s.receive(receivePacket);
 			String sentence = new String(receivePacket.getData());
 
-			// print the contents
-			System.out.println("RECEIVED: " + sentence);
-
 			// find details of packet origin
 			InetAddress IPAddress = receivePacket.getAddress();
 			int port = receivePacket.getPort();
-			byte[] sendData = new byte[1024];
-			sendData = sentence.getBytes();
-            DatagramPacket sendPacket =
-            new DatagramPacket(sendData, sendData.length, IPAddress, port);
-            s.send(sendPacket); 
+
+			// Construct the URL
+			String urlToConnect = "http://" + IPAddress.getHostAddress()
+					+ ":8200/attendance";
+			System.out.println("Connecting to " + urlToConnect);
+
+			URL urlObj = new URL(urlToConnect);
+			HttpURLConnection connection = (HttpURLConnection) urlObj
+					.openConnection();
+			connection.setRequestMethod("GET");
+			connection.getOutputStream().close();
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					connection.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+			// print result
+			System.out.println(response.toString());
 		}
 	}
 }
