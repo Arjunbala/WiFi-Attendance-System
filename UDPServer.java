@@ -32,14 +32,13 @@ class UDPServer {
 
 			// Construct the URL
 			String urlToConnect = "http://" + IPAddress.getHostAddress()
-					+ ":8200/attendance";
+					+ ":8200/attendance.txt";
 			System.out.println("Connecting to " + urlToConnect);
 
 			URL urlObj = new URL(urlToConnect);
 			HttpURLConnection connection = (HttpURLConnection) urlObj
 					.openConnection();
 			connection.setRequestMethod("GET");
-			connection.getOutputStream().close();
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					connection.getInputStream()));
 			String inputLine;
