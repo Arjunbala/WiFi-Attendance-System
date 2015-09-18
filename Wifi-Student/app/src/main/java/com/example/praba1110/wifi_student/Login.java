@@ -6,17 +6,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 public class Login extends AppCompatActivity {
 
+    EditText rollno;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        rollno= (EditText) findViewById(R.id.editText);
+
     }
 
     public void login(View V){
         Intent intent=new Intent(this,Attendance.class);
+        intent.putExtra("rno",rollno.getText().toString());
         startActivity(intent);
     }
     @Override

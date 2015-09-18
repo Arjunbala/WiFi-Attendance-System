@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
+    String s1,s2;
     TextView time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,22 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                 Toast.makeText(getApplicationContext(),"Attendance taken",Toast.LENGTH_SHORT).show();
                 d.end_discovery();
+                s1=d.getDevices()[0];
+                s2=d.getDevices()[1];
+
+            }
+        }.start();
+        Toast.makeText(this, s1, Toast.LENGTH_SHORT).show();
+        new CountDownTimer(4000,1000){
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                Toast.makeText(getApplicationContext(),s2,Toast.LENGTH_SHORT).show();
             }
         }.start();
     }
